@@ -46,7 +46,7 @@ public class Main {
                 PriceStatistics.displayMinMaxAverage(priceEntries);
                 break;
             case "3":
-                // Lägg till funktionalitet för Sortera här
+                PriceStatistics.displayLowestToHighest(priceEntries);
                 break;
             case "4":
                 // Lägg till funktionalitet för Bästa Laddningstid här
