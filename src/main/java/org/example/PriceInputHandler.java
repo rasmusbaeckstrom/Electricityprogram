@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class PriceInputHandler {
-    private static final String TIME_FORMAT_PATTERN = "%02d:00-%02d:00";
+    static final String TIME_FORMAT_PATTERN = "%02d:00-%02d:00";
     private static final String COMPLETION_MESSAGE = "Inmatningen är klar. Du har matat in priser för hela dygnet.";
 
     public static List<ElectricityRate> inputPrices(Scanner scanner) {
@@ -24,7 +24,7 @@ public class PriceInputHandler {
 
     private static int promptForPrice(Scanner scanner, int hour) {
         while (true) {
-            System.out.print("Ange priset i öre för perioden " + String.format(TIME_FORMAT_PATTERN, hour, hour + 1) + ": ");
+            System.out.print("Ange priset i öre för tidsperioden " + String.format(TIME_FORMAT_PATTERN, hour, hour + 1) + ": ");
             try {
                 int price = Integer.parseInt(scanner.nextLine());
                 if (price < 0) {
@@ -33,7 +33,7 @@ public class PriceInputHandler {
                     return price;
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Ogiltig inmatning. Ange ett giltigt heltal.");
+                System.out.println("Felaktig inmatning. Ange priset i öre, t.ex 115.");
             }
         }
     }
