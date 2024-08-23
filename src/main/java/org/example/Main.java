@@ -14,13 +14,12 @@ public class Main {
         while (true) {
             displayMenu();
             String choice = scanner.nextLine().trim();
-
             if (isExitChoice(choice)) {
                 break;
             }
-
             handleMenuChoice(choice, scanner);
         }
+
         scanner.close();
     }
 
@@ -44,7 +43,7 @@ public class Main {
                 priceEntries = PriceInputHandler.inputPrices(scanner);
                 break;
             case "2":
-                // Lägg till funktionalitet för Min, Max och Medel här
+                PriceStatistics.displayMinMaxAverage(priceEntries);
                 break;
             case "3":
                 // Lägg till funktionalitet för Sortera här
