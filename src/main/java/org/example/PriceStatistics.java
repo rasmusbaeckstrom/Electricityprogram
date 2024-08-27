@@ -30,7 +30,7 @@ public class PriceStatistics {
 
         System.out.println("Lägsta pris: " + minRate.getRate() + " öre mellan " + formatHour(minRate.getHour()));
         System.out.println("Högsta pris: " + maxRate.getRate() + " öre mellan " + formatHour(maxRate.getHour()));
-        System.out.println("Medelpris: " + String.format("%.2f", average) + " öre");
+        System.out.println("Dygnets medelpris: " + String.format("%.2f", average) + " öre");
     }
 
     private static String formatHour(int hour) {
@@ -50,4 +50,40 @@ public class PriceStatistics {
             System.out.println(rate.getRate() + " öre mellan " + formatHour(rate.getHour()));
         }
     }
+
+    public static void displayBestLoadingTime(List<ElectricityRate> priceEntries) {
+        if (priceEntries == null || priceEntries.isEmpty() || priceEntries.size() < 4) {
+            System.out.println("Ingen data tillgänglig.");
+            return;
+        }
+
+        double minSum = Double.MAX_VALUE;
+        int bestStartIndex = 0;
+
+        for (int i = 0; i < priceEntries.size(); i++) {
+            double currentSum = 0;
+            for (int j = 0; j < 4; j++) {
+                currentSum += priceEntries.get((i + j) % priceEntries.size()).getRate();
+            }
+
+            System.out.println("Kontrollerar tidsintervall: " + formatHour(priceEntries.get(i).getHour()) +
+                    " till " + formatHour(priceEntries.get((i + 3) % priceEntries.size()).getHour()) +
+                    " - Summa för 4 timmar: " + currentSum);
+
+            if (currentSum < minSum) {
+                minSum = currentSum;
+                bestStartIndex = i;
+            }
+        }
+
+        double averagePrice = minSum / 4;
+        int startHour = priceEntries.get(bestStartIndex).getHour();
+
+        System.out.println("Bästa starttid att ladda: " + formatHour(startHour) +
+                " med ett medelpris på " + String.format("%.2f", averagePrice) +
+                " öre under 4 timmar.");
+    }
 }
+
+
+

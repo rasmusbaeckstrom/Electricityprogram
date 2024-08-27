@@ -4,23 +4,20 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    private static final String EXIT_LOWER = "e";
-    private static final String EXIT_UPPER = "E";
+    private static final String EXIT_COMMAND = "e";
     private static List<ElectricityRate> priceEntries;
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            displayMenu();
-            String choice = scanner.nextLine().trim();
-            if (isExitChoice(choice)) {
-                break;
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (true) {
+                displayMenu();
+                String choice = scanner.nextLine().trim();
+                if (shouldExit(choice)) {
+                    break;
+                }
+                handleMenuChoice(choice, scanner);
             }
-            handleMenuChoice(choice, scanner);
         }
-
-        scanner.close();
     }
 
     private static void displayMenu() {
@@ -33,8 +30,8 @@ public class Main {
         System.out.println("e. Avsluta");
     }
 
-    private static boolean isExitChoice(String choice) {
-        return choice.equalsIgnoreCase(EXIT_LOWER) || choice.equalsIgnoreCase(EXIT_UPPER);
+    private static boolean shouldExit(String choice) {
+        return choice.equalsIgnoreCase(EXIT_COMMAND);
     }
 
     private static void handleMenuChoice(String choice, Scanner scanner) {
@@ -49,7 +46,7 @@ public class Main {
                 PriceStatistics.displayLowestToHighest(priceEntries);
                 break;
             case "4":
-                // Lägg till funktionalitet för Bästa Laddningstid här
+                PriceStatistics.displayBestLoadingTime(priceEntries);
                 break;
             default:
                 System.out.println("Ogiltigt val. Försök igen.");
