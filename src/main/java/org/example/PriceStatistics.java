@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -44,9 +45,10 @@ public class PriceStatistics {
             return;
         }
 
-        Collections.sort(priceEntries, Comparator.comparingDouble(ElectricityRate::getRate));
+        List<ElectricityRate> sortedEntries = new ArrayList<>(priceEntries);
+        Collections.sort(sortedEntries, Comparator.comparingDouble(ElectricityRate::getRate));
 
-        for (ElectricityRate rate : priceEntries) {
+        for (ElectricityRate rate : sortedEntries) {
             System.out.println(rate.getRate() + " öre mellan " + formatHour(rate.getHour()));
         }
     }
@@ -66,10 +68,6 @@ public class PriceStatistics {
                 currentSum += priceEntries.get((i + j) % priceEntries.size()).getRate();
             }
 
-            System.out.println("Kontrollerar tidsintervall: " + formatHour(priceEntries.get(i).getHour()) +
-                    " till " + formatHour(priceEntries.get((i + 3) % priceEntries.size()).getHour()) +
-                    " - Summa för 4 timmar: " + currentSum);
-
             if (currentSum < minSum) {
                 minSum = currentSum;
                 bestStartIndex = i;
@@ -78,8 +76,10 @@ public class PriceStatistics {
 
         double averagePrice = minSum / 4;
         int startHour = priceEntries.get(bestStartIndex).getHour();
+        int endHour = priceEntries.get((bestStartIndex + 3) % priceEntries.size()).getHour() + 1;
 
         System.out.println("Bästa starttid att ladda: " + formatHour(startHour) +
+                " till " + String.format("%02d:00", endHour % 24) +
                 " med ett medelpris på " + String.format("%.2f", averagePrice) +
                 " öre under 4 timmar.");
     }

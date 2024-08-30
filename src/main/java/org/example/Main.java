@@ -27,6 +27,7 @@ public class Main {
         System.out.println("2. Min, Max och Medel");
         System.out.println("3. Sortera");
         System.out.println("4. Bästa Laddningstid (4h)");
+        System.out.println("5. Inläsning från fil");
         System.out.println("e. Avsluta");
     }
 
@@ -47,6 +48,9 @@ public class Main {
                 break;
             case "4":
                 PriceStatistics.displayBestLoadingTime(priceEntries);
+                break;
+            case "5":
+                priceEntries = PriceInputHandler.readPricesFromFile("elpriser.csv");
                 break;
             default:
                 System.out.println("Ogiltigt val. Försök igen.");

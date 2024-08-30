@@ -1,5 +1,8 @@
 package org.example;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -36,5 +39,28 @@ public class PriceInputHandler {
                 System.out.println("Felaktig inmatning. Ange priset i öre, t.ex 115.");
             }
         }
+    }
+
+    public static List<ElectricityRate> readPricesFromFile(String fileName) {
+        List<ElectricityRate> priceEntries = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                String timeRange = values[0].trim();
+                int rate = Integer.parseInt(values[1].trim());
+
+                String[] timeParts = timeRange.split("[:-]");
+                int hour = Integer.parseInt(timeParts[0].trim());
+
+                priceEntries.add(new ElectricityRate(hour, rate));
+            }
+            System.out.println("Priser har lästs in från filen.");
+        } catch (IOException e) {
+            System.out.println("Fel vid läsning från fil: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Felaktigt format i filen: " + e.getMessage());
+        }
+        return priceEntries;
     }
 }
